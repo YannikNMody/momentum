@@ -45,6 +45,133 @@ body {
   background: linear-gradient(180deg, rgba(10, 11, 13, 0.55) 0%, rgba(10, 11, 13, 0.35) 45%, rgba(10, 11, 13, 0.75) 100%);
 }
 
+.weather-widget {
+  position: fixed;
+  top: 1rem;
+  right: 7.5rem;
+  z-index: 1;
+  text-align: left;
+}
+
+.weather-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+
+.weather-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.weather-icon svg,
+.weather-hour-icon svg {
+  display: block;
+}
+
+.weather-no-location .weather-city {
+  opacity: 0.85;
+}
+
+.weather-search {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  width: 16rem;
+  background: rgba(20, 22, 26, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.weather-search-input {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+}
+
+.weather-search-results {
+  list-style: none;
+  margin-top: 0.35rem;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.weather-result {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.3rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.weather-result:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.weather-panel {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  width: 16rem;
+  background: rgba(20, 22, 26, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.weather-condition {
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+
+.weather-feels-like,
+.weather-highlow {
+  opacity: 0.75;
+  font-size: 0.8rem;
+  margin-bottom: 0.15rem;
+}
+
+.weather-hourly {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.6rem;
+}
+
+.weather-hour {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.7rem;
+  opacity: 0.85;
+}
+
+.weather-updated {
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  opacity: 0.5;
+}
+
 .corner-controls {
   position: fixed;
   top: 1rem;

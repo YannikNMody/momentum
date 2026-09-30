@@ -10,6 +10,25 @@
     <img id="background-image" class="background-image" alt="" />
     <div class="background-overlay"></div>
   </div>
+  <section id="weather-widget" class="weather-widget distraction-hide">
+    <button id="weather-toggle" class="weather-toggle" type="button" aria-expanded="false" aria-controls="weather-panel">
+      <span id="weather-icon" class="weather-icon"></span>
+      <span id="weather-temp" class="weather-temp"></span>
+      <span id="weather-city" class="weather-city"></span>
+    </button>
+    <div id="weather-search" class="weather-search" hidden>
+      <input id="weather-search-input" class="weather-search-input" type="text" placeholder="Search city" autocomplete="off" />
+      <ul id="weather-search-results" class="weather-search-results"></ul>
+    </div>
+    <div id="weather-panel" class="weather-panel" hidden>
+      <p id="weather-condition" class="weather-condition"></p>
+      <p id="weather-feels-like" class="weather-feels-like"></p>
+      <p id="weather-highlow" class="weather-highlow"></p>
+      <ul id="weather-hourly" class="weather-hourly"></ul>
+      <p id="weather-updated" class="weather-updated"></p>
+    </div>
+  </section>
+
   <div class="corner-controls">
     <button id="distraction-toggle" class="distraction-toggle" type="button" title="Toggle distraction-free view (F)" aria-pressed="false">Focus view</button>
     <button id="background-next" class="background-next distraction-hide" type="button" title="Next background image">Next photo</button>

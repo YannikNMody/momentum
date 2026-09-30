@@ -6,6 +6,7 @@ import { initGreeting } from "./js/greeting.js";
 import { initNflWidget } from "./js/nfl-widget.js";
 import { initTimer } from "./js/timer.js";
 import { initTodos } from "./js/todos.js";
+import { initWeatherWidget } from "./js/weather-widget.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   initBackground();
@@ -16,4 +17,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTimer();
   initDistractionFree();
   initNflWidget();
+  initWeatherWidget();
 });
