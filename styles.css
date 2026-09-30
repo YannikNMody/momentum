@@ -368,7 +368,10 @@ button {
 }
 
 @media (max-width: 520px) {
-  .corner-panel-top-left {
+  /* Too narrow for a full panel body - collapse both corner panels down to
+     their pill-sized toggle header regardless of expanded state. The
+     toggle stays visible and tappable, it just no longer opens inline. */
+  .corner-panel .panel-body {
     display: none;
   }
 }
