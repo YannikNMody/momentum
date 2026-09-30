@@ -45,11 +45,19 @@ body {
   background: linear-gradient(180deg, rgba(10, 11, 13, 0.55) 0%, rgba(10, 11, 13, 0.35) 45%, rgba(10, 11, 13, 0.75) 100%);
 }
 
-.background-next {
+.corner-controls {
   position: fixed;
   top: 1rem;
   right: 1rem;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.distraction-toggle,
+.background-next {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: inherit;
@@ -60,6 +68,7 @@ body {
   cursor: pointer;
 }
 
+.distraction-toggle:hover,
 .background-next:hover {
   background: rgba(255, 255, 255, 0.16);
 }
@@ -98,6 +107,142 @@ body {
   margin-top: 0.5rem;
   font-size: 1rem;
   opacity: 0.7;
+}
+
+.focus-section {
+  margin-top: 1.5rem;
+}
+
+.focus-input {
+  font: inherit;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  width: 20em;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.focus-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.focus-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.focus-text.done {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.focus-edit-btn,
+.focus-clear-btn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  opacity: 0.6;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+}
+
+.focus-edit-btn:hover,
+.focus-clear-btn:hover {
+  opacity: 1;
+}
+
+.timer-section {
+  margin-top: 1.5rem;
+}
+
+.timer-mode {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+.timer-display {
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  margin: 0.25rem 0 0.5rem;
+}
+
+@keyframes timer-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.06);
+  }
+}
+
+.timer-display.pulse {
+  animation: timer-pulse 1s ease-in-out infinite;
+}
+
+.timer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.timer-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+
+.timer-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.timer-banner {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+}
+
+.timer-dismiss {
+  background: transparent;
+  border: none;
+  color: inherit;
+  opacity: 0.7;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.timer-dismiss:hover {
+  opacity: 1;
+}
+
+.distraction-free .distraction-hide {
+  display: none;
 }
 
 .greeting-name {

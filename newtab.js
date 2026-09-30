@@ -1,6 +1,9 @@
 import { initBackground } from "./js/background.js";
 import { initClock } from "./js/clock.js";
+import { initDistractionFree } from "./js/distraction-free.js";
+import { initFocus } from "./js/focus.js";
 import { initGreeting } from "./js/greeting.js";
+import { initTimer } from "./js/timer.js";
 import { initTodos } from "./js/todos.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -8,4 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const greeting = await initGreeting();
   initClock(() => greeting.refresh());
   initTodos();
+  initFocus();
+  initTimer();
+  initDistractionFree();
 });
