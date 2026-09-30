@@ -2,6 +2,7 @@
 // if the stored date isn't today, the focus is treated as unset.
 
 import { storage } from "./storage.js";
+import { createIcon } from "./icons.js";
 
 const STORAGE_KEY = "focus";
 
@@ -20,6 +21,9 @@ export async function initFocus() {
   const textEl = document.getElementById("focus-text");
   const editBtn = document.getElementById("focus-edit-btn");
   const clearBtn = document.getElementById("focus-clear-btn");
+
+  editBtn.appendChild(createIcon("pencil", { size: 15 }));
+  clearBtn.appendChild(createIcon("x", { size: 15 }));
 
   const today = todayKey();
 

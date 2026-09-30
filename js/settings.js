@@ -43,6 +43,7 @@ export function initSettings() {
   if (!gearBtn || !sheetEl) return;
 
   gearBtn.appendChild(createIcon("gear", { size: 18 }));
+  closeBtn.appendChild(createIcon("x", { size: 18 }));
 
   // General
   const nameInput = document.getElementById("settings-name-input");
@@ -206,7 +207,8 @@ export function initSettings() {
     const setBtn = document.createElement("button");
     setBtn.type = "button";
     setBtn.className = "settings-gallery-btn";
-    setBtn.textContent = "Set as background";
+    setBtn.appendChild(createIcon("image", { size: 13 }));
+    setBtn.appendChild(document.createTextNode("Set as background"));
     setBtn.addEventListener("click", async () => {
       // "My photos" won't be in the pool at all if the source is set to
       // "Football photos" only - widen it so the pick actually takes.
@@ -218,7 +220,8 @@ export function initSettings() {
     const pinBtn = document.createElement("button");
     pinBtn.type = "button";
     pinBtn.className = "settings-gallery-btn";
-    pinBtn.textContent = isPinned ? "Unpin" : "Pin this photo";
+    pinBtn.appendChild(createIcon("pin", { size: 13 }));
+    pinBtn.appendChild(document.createTextNode(isPinned ? "Unpin" : "Pin this photo"));
     pinBtn.addEventListener("click", async () => {
       if (!isPinned) {
         const source = (await storage.sync.get(SOURCE_KEY))[SOURCE_KEY] || "bundled";
@@ -231,7 +234,8 @@ export function initSettings() {
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
     deleteBtn.className = "settings-gallery-btn settings-gallery-btn-danger";
-    deleteBtn.textContent = "Delete";
+    deleteBtn.appendChild(createIcon("trash", { size: 13 }));
+    deleteBtn.appendChild(document.createTextNode("Delete"));
     deleteBtn.addEventListener("click", async () => {
       if (!window.confirm("Delete this photo?")) return;
       await deletePhoto(photo.id);

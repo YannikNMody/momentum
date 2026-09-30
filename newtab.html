@@ -9,40 +9,52 @@
   <div id="background" class="background" aria-hidden="true">
     <img id="background-image" class="background-image" alt="" />
     <div class="background-overlay"></div>
+    <div class="scrim"></div>
   </div>
-  <section id="weather-widget" class="weather-widget distraction-hide">
-    <button id="weather-toggle" class="weather-toggle" type="button" aria-expanded="false" aria-controls="weather-panel">
-      <span id="weather-icon" class="weather-icon"></span>
-      <span id="weather-temp" class="weather-temp"></span>
-      <span id="weather-city" class="weather-city"></span>
+
+  <section id="nfl-panel" class="nfl-panel corner-panel corner-panel-top-left glass-2 distraction-hide" hidden>
+    <button id="nfl-toggle" class="panel-toggle" type="button" aria-expanded="true" aria-controls="nfl-body">
+      <span class="panel-toggle-label">
+        <span id="nfl-title">NFL</span>
+      </span>
+      <span class="panel-toggle-icon" data-icon="chevron-down" aria-hidden="true"></span>
     </button>
-    <div id="weather-search" class="weather-search" hidden>
-      <input id="weather-search-input" class="weather-search-input" type="text" placeholder="Search city" autocomplete="off" />
-      <ul id="weather-search-results" class="weather-search-results"></ul>
-    </div>
-    <div id="weather-panel" class="weather-panel" hidden>
-      <p id="weather-condition" class="weather-condition"></p>
-      <p id="weather-feels-like" class="weather-feels-like"></p>
-      <p id="weather-highlow" class="weather-highlow"></p>
-      <ul id="weather-hourly" class="weather-hourly"></ul>
-      <p id="weather-updated" class="weather-updated"></p>
+    <div id="nfl-body" class="panel-body">
+      <ul id="nfl-game-list" class="nfl-game-list"></ul>
+      <p id="nfl-updated" class="panel-updated"></p>
     </div>
   </section>
 
-  <div class="corner-controls">
-    <button id="distraction-toggle" class="distraction-toggle" type="button" title="Toggle distraction-free view (F)" aria-pressed="false">Focus view</button>
-    <button id="settings-toggle" class="settings-toggle" type="button" aria-haspopup="dialog" aria-controls="settings-sheet" aria-expanded="false" title="Settings">
-      <span class="visually-hidden">Settings</span>
-    </button>
-    <button id="background-next" class="background-next distraction-hide" type="button" title="Next background image">Next photo</button>
+  <div class="top-right-controls">
+    <section id="weather-widget" class="weather-widget distraction-hide">
+      <button id="weather-toggle" class="weather-toggle glass-1" type="button" aria-expanded="false" aria-controls="weather-panel">
+        <span id="weather-icon" class="weather-icon"></span>
+        <span id="weather-temp" class="weather-temp"></span>
+        <span id="weather-city" class="weather-city"></span>
+      </button>
+      <div id="weather-search" class="weather-search glass-2" hidden>
+        <label class="visually-hidden" for="weather-search-input">Search city</label>
+        <input id="weather-search-input" class="weather-search-input" type="text" placeholder="Search city" autocomplete="off" />
+        <ul id="weather-search-results" class="weather-search-results"></ul>
+      </div>
+      <div id="weather-panel" class="weather-panel glass-2" hidden>
+        <p id="weather-condition" class="weather-condition"></p>
+        <p id="weather-feels-like" class="weather-feels-like"></p>
+        <p id="weather-highlow" class="weather-highlow"></p>
+        <ul id="weather-hourly" class="weather-hourly"></ul>
+        <p id="weather-updated" class="weather-updated"></p>
+      </div>
+    </section>
+
+    <button id="distraction-toggle" class="distraction-toggle icon-btn glass-1" type="button" aria-label="Toggle distraction-free view" title="Toggle distraction-free view (F)" aria-pressed="false"></button>
+    <button id="settings-toggle" class="settings-toggle icon-btn glass-1" type="button" aria-haspopup="dialog" aria-controls="settings-sheet" aria-expanded="false" aria-label="Settings" title="Settings"></button>
   </div>
-  <p id="background-credit" class="background-credit distraction-hide"></p>
 
   <div id="settings-overlay" class="settings-overlay" hidden></div>
-  <div id="settings-sheet" class="settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
+  <div id="settings-sheet" class="settings-sheet glass-3" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
     <div class="settings-header">
       <h2 id="settings-title">Settings</h2>
-      <button id="settings-close" class="settings-close" type="button" aria-label="Close settings">Close</button>
+      <button id="settings-close" class="settings-close icon-btn" type="button" aria-label="Close settings"></button>
     </div>
 
     <section class="settings-section">
@@ -105,13 +117,14 @@
 
     <section id="focus-section" class="focus-section">
       <form id="focus-form" class="focus-form">
-        <input id="focus-input" class="focus-input" type="text" placeholder="What's your main focus today?" autocomplete="off" />
+        <label class="visually-hidden" for="focus-input">What's your main focus today?</label>
+        <input id="focus-input" class="focus-input glass-1" type="text" placeholder="What's your main focus today?" autocomplete="off" />
       </form>
       <div id="focus-display" class="focus-display" hidden>
-        <input id="focus-checkbox" class="focus-checkbox" type="checkbox" />
+        <input id="focus-checkbox" class="focus-checkbox" type="checkbox" aria-label="Mark focus as done" />
         <span id="focus-text" class="focus-text"></span>
-        <button id="focus-edit-btn" class="focus-edit-btn distraction-hide" type="button">Edit</button>
-        <button id="focus-clear-btn" class="focus-clear-btn distraction-hide" type="button">Clear</button>
+        <button id="focus-edit-btn" class="focus-edit-btn icon-btn distraction-hide" type="button" aria-label="Edit focus"></button>
+        <button id="focus-clear-btn" class="focus-clear-btn icon-btn distraction-hide" type="button" aria-label="Clear focus"></button>
       </div>
     </section>
 
@@ -119,40 +132,42 @@
       <div id="timer-mode" class="timer-mode"></div>
       <div id="timer-display" class="timer-display"></div>
       <div class="timer-controls">
-        <button id="timer-start" class="timer-btn" type="button">Start</button>
-        <button id="timer-pause" class="timer-btn" type="button" hidden>Pause</button>
-        <button id="timer-resume" class="timer-btn" type="button" hidden>Resume</button>
-        <button id="timer-reset" class="timer-btn" type="button">Reset</button>
-        <button id="timer-skip" class="timer-btn" type="button">Skip to break</button>
+        <button id="timer-start" class="timer-btn glass-1 timer-btn-primary" type="button">Start</button>
+        <button id="timer-pause" class="timer-btn glass-1" type="button" hidden>Pause</button>
+        <button id="timer-resume" class="timer-btn glass-1 timer-btn-primary" type="button" hidden>Resume</button>
+        <button id="timer-reset" class="timer-btn glass-1" type="button">Reset</button>
+        <button id="timer-skip" class="timer-btn glass-1" type="button">Skip to break</button>
       </div>
-      <div id="timer-banner" class="timer-banner" hidden>
+      <div id="timer-banner" class="timer-banner glass-2" hidden>
         <span id="timer-banner-text" class="timer-banner-text"></span>
-        <button id="timer-dismiss" class="timer-dismiss" type="button">Dismiss</button>
+        <button id="timer-dismiss" class="timer-dismiss icon-btn" type="button" aria-label="Dismiss"></button>
       </div>
     </section>
   </main>
 
-  <section id="todo-panel" class="todo-panel distraction-hide">
-    <button id="todo-toggle" class="todo-toggle" type="button" aria-expanded="true" aria-controls="todo-body">
-      <span>Todos</span>
-      <span id="todo-count" class="todo-count"></span>
+  <div class="bottom-left-controls distraction-hide">
+    <button id="background-next" class="background-next icon-btn glass-1" type="button">
+      <span class="background-next-icon" aria-hidden="true"></span>
+      <span class="background-next-label">Next photo</span>
     </button>
-    <div id="todo-body" class="todo-body">
+    <p id="background-credit" class="background-credit"></p>
+  </div>
+
+  <section id="todo-panel" class="todo-panel corner-panel corner-panel-bottom-right glass-2 distraction-hide">
+    <button id="todo-toggle" class="panel-toggle" type="button" aria-expanded="true" aria-controls="todo-body">
+      <span class="panel-toggle-label">
+        <span>Todos</span>
+      </span>
+      <span id="todo-count" class="panel-count"></span>
+      <span class="panel-toggle-icon" data-icon="chevron-down" aria-hidden="true"></span>
+    </button>
+    <div id="todo-body" class="panel-body todo-body">
       <form id="todo-form" class="todo-form">
+        <label class="visually-hidden" for="todo-input">Add a todo</label>
         <input id="todo-input" class="todo-input" type="text" placeholder="Add a todo and press Enter" autocomplete="off" />
       </form>
       <ul id="todo-list" class="todo-list"></ul>
       <p id="todo-empty" class="todo-empty">No todos yet.</p>
-    </div>
-  </section>
-
-  <section id="nfl-panel" class="nfl-panel distraction-hide" hidden>
-    <button id="nfl-toggle" class="nfl-toggle" type="button" aria-expanded="true" aria-controls="nfl-body">
-      <span id="nfl-title">NFL</span>
-    </button>
-    <div id="nfl-body" class="nfl-body">
-      <ul id="nfl-game-list" class="nfl-game-list"></ul>
-      <p id="nfl-updated" class="nfl-updated"></p>
     </div>
   </section>
 

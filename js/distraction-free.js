@@ -4,6 +4,7 @@
 // or the "F" key (ignored while typing in a field). State is persisted.
 
 import { storage } from "./storage.js";
+import { createIcon } from "./icons.js";
 
 const STORAGE_KEY = "distractionFree";
 
@@ -42,7 +43,11 @@ export async function initDistractionFree() {
 
   function apply() {
     document.body.classList.toggle("distraction-free", enabled);
-    toggleBtn.textContent = enabled ? "Show controls" : "Focus view";
+    toggleBtn.textContent = "";
+    toggleBtn.appendChild(createIcon(enabled ? "minimize" : "expand", { size: 18 }));
+    const label = enabled ? "Show controls" : "Focus view";
+    toggleBtn.setAttribute("aria-label", label);
+    toggleBtn.title = `${label} (F)`;
     toggleBtn.setAttribute("aria-pressed", String(enabled));
   }
 }

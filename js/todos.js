@@ -2,6 +2,7 @@
 // Listens for chrome.storage.onChanged so multiple open new tabs stay in sync.
 
 import { storage } from "./storage.js";
+import { createIcon } from "./icons.js";
 
 const STORAGE_KEY = "todos";
 
@@ -98,7 +99,8 @@ export async function initTodos() {
     const editBtn = document.createElement("button");
     editBtn.type = "button";
     editBtn.className = "todo-edit-btn";
-    editBtn.textContent = "Edit";
+    editBtn.setAttribute("aria-label", "Edit todo");
+    editBtn.appendChild(createIcon("pencil", { size: 14 }));
     editBtn.addEventListener("click", () => {
       editingId = todo.id;
       render();
@@ -110,7 +112,8 @@ export async function initTodos() {
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
     deleteBtn.className = "todo-delete-btn";
-    deleteBtn.textContent = "Delete";
+    deleteBtn.setAttribute("aria-label", "Delete todo");
+    deleteBtn.appendChild(createIcon("trash", { size: 14 }));
     deleteBtn.addEventListener("click", async () => {
       todos = todos.filter((t) => t.id !== todo.id);
       await save();

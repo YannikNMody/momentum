@@ -9,6 +9,8 @@
 
 import { storage } from "./storage.js";
 import { getAllPhotos } from "./photoStore.js";
+import { applyAdaptiveScrim } from "./scrim.js";
+import { createIcon } from "./icons.js";
 
 export const BACKGROUND_KEY = "background";
 export const SOURCE_KEY = "backgroundSource";
@@ -56,6 +58,9 @@ export async function initBackground() {
   const nextBtn = document.getElementById("background-next");
   const creditEl = document.getElementById("background-credit");
 
+  const nextIconEl = nextBtn.querySelector(".background-next-icon");
+  if (nextIconEl) nextIconEl.appendChild(createIcon("image", { size: 16 }));
+
   const credits = await loadCredits();
 
   let pool = [];
@@ -79,6 +84,7 @@ export async function initBackground() {
     loader.onload = () => {
       imgEl.src = loader.src;
       imgEl.classList.add("loaded");
+      applyAdaptiveScrim(loader);
       if (revokeAfterLoad) URL.revokeObjectURL(revokeAfterLoad);
     };
     loader.onerror = () => {

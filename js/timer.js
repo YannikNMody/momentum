@@ -7,6 +7,7 @@
 // audio of any kind is used.
 
 import { storage } from "./storage.js";
+import { createIcon } from "./icons.js";
 
 const STORAGE_KEY = "timer";
 export const DURATIONS_KEY = "timerDurations";
@@ -47,6 +48,17 @@ export async function initTimer() {
   const bannerEl = document.getElementById("timer-banner");
   const bannerTextEl = document.getElementById("timer-banner-text");
   const dismissBtn = document.getElementById("timer-dismiss");
+
+  function prependIcon(btn, name) {
+    const icon = createIcon(name, { size: 15 });
+    btn.insertBefore(icon, btn.firstChild);
+  }
+  prependIcon(startBtn, "play");
+  prependIcon(pauseBtn, "pause");
+  prependIcon(resumeBtn, "play");
+  prependIcon(resetBtn, "rotate-ccw");
+  prependIcon(skipBtn, "skip-forward");
+  dismissBtn.appendChild(createIcon("x", { size: 14 }));
 
   applyDurationSettings((await storage.sync.get(DURATIONS_KEY))[DURATIONS_KEY]);
 
