@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "description": "A light version of Momentum: replaces the new tab page.",
   "permissions": ["storage"],
+  "host_permissions": ["https://site.api.espn.com/*"],
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   }

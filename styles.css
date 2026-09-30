@@ -383,3 +383,106 @@ body {
   font-size: 0.85rem;
   padding: 0.5rem 0;
 }
+
+.nfl-panel {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  width: 280px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+}
+
+.nfl-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.9rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+}
+
+.nfl-body {
+  padding: 0 0.9rem 0.9rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.nfl-body.collapsed {
+  display: none;
+}
+
+.nfl-favorite-label {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-bottom: 0.25rem;
+}
+
+.nfl-favorite-select {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 0.3rem 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.nfl-game-list {
+  list-style: none;
+}
+
+.nfl-game {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+.nfl-game-pinned {
+  background: rgba(255, 255, 255, 0.08);
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+}
+
+.nfl-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.nfl-winner {
+  font-weight: 700;
+}
+
+.nfl-chip {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.nfl-at {
+  opacity: 0.5;
+  font-size: 0.75rem;
+}
+
+.nfl-updated {
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  opacity: 0.5;
+}

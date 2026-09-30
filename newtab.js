@@ -3,6 +3,7 @@ import { initClock } from "./js/clock.js";
 import { initDistractionFree } from "./js/distraction-free.js";
 import { initFocus } from "./js/focus.js";
 import { initGreeting } from "./js/greeting.js";
+import { initNflWidget } from "./js/nfl-widget.js";
 import { initTimer } from "./js/timer.js";
 import { initTodos } from "./js/todos.js";
 
@@ -14,4 +15,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   initFocus();
   initTimer();
   initDistractionFree();
+  initNflWidget();
 });
