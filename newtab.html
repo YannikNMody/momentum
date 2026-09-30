@@ -11,6 +11,21 @@
     <h1 id="clock" class="clock"></h1>
     <p id="date" class="date"></p>
   </main>
+
+  <section id="todo-panel" class="todo-panel">
+    <button id="todo-toggle" class="todo-toggle" type="button" aria-expanded="true" aria-controls="todo-body">
+      <span>Todos</span>
+      <span id="todo-count" class="todo-count"></span>
+    </button>
+    <div id="todo-body" class="todo-body">
+      <form id="todo-form" class="todo-form">
+        <input id="todo-input" class="todo-input" type="text" placeholder="Add a todo and press Enter" autocomplete="off" />
+      </form>
+      <ul id="todo-list" class="todo-list"></ul>
+      <p id="todo-empty" class="todo-empty">No todos yet.</p>
+    </div>
+  </section>
+
   <script type="module" src="newtab.js"></script>
 </body>
 </html>
