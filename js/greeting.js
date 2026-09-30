@@ -108,6 +108,14 @@ export async function initGreeting() {
     input.addEventListener("blur", commit);
   }
 
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== "sync" || !changes.name) return;
+    const value = changes.name.newValue || "";
+    if (value === name || editing) return;
+    name = value;
+    renderGreeting();
+  });
+
   renderGreeting();
 
   return {

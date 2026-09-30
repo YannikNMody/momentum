@@ -10,8 +10,8 @@ import { storage } from "./storage.js";
 import { createIcon } from "./icons.js";
 import { searchCities, fetchForecast, iconNameFor, conditionLabelFor, formatTemp } from "./weather.js";
 
-const LOCATION_KEY = "weatherLocation";
-const UNIT_KEY = "weatherUnit";
+export const LOCATION_KEY = "weatherLocation";
+export const UNIT_KEY = "weatherUnit";
 const CACHE_KEY = "weatherCache";
 const REFRESH_MS = 30 * 60 * 1000;
 const SEARCH_DEBOUNCE_MS = 300;

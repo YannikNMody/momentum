@@ -1,14 +1,15 @@
 // NFL scores widget UI: caches the ESPN response in chrome.storage.local
-// (refetched at most every 3 hours), remembers a favorite team in
-// chrome.storage.sync to pin/highlight that game, and fails soft - on any
-// error it falls back to cached data with a "last updated" note, or hides
-// the panel quietly if there's nothing to show.
+// (refetched at most every 3 hours), and highlights/pins the favorite
+// team's game using a favorite chosen from the settings sheet
+// (chrome.storage.sync). Fails soft - on any error it falls back to cached
+// data with a "last updated" note, or hides the panel quietly if there's
+// nothing to show.
 
-import { fetchLatestCompletedWeek, extractTeams } from "./nfl.js";
+import { fetchLatestCompletedWeek } from "./nfl.js";
 import { storage } from "./storage.js";
 
-const CACHE_KEY = "nflScoreboard";
-const FAVORITE_KEY = "nflFavoriteTeam";
+export const CACHE_KEY = "nflScoreboard";
+export const FAVORITE_KEY = "nflFavoriteTeam";
 const REFRESH_MS = 3 * 60 * 60 * 1000;
 
 function formatUpdated(fetchedAt) {
@@ -25,7 +26,6 @@ export async function initNflWidget() {
   const titleEl = document.getElementById("nfl-title");
   const listEl = document.getElementById("nfl-game-list");
   const updatedEl = document.getElementById("nfl-updated");
-  const favoriteSelect = document.getElementById("nfl-favorite-select");
 
   if (!panelEl) return;
 
@@ -37,16 +37,9 @@ export async function initNflWidget() {
   let favorite = (await storage.sync.get(FAVORITE_KEY))[FAVORITE_KEY] || "";
   let cached = (await storage.local.get(CACHE_KEY))[CACHE_KEY] || null;
 
-  favoriteSelect.addEventListener("change", async () => {
-    favorite = favoriteSelect.value;
-    await storage.sync.set({ [FAVORITE_KEY]: favorite });
-    render();
-  });
-
   chrome.storage.onChanged.addListener((changes, areaName) => {
     if (areaName === "sync" && changes[FAVORITE_KEY]) {
       favorite = changes[FAVORITE_KEY].newValue || "";
-      favoriteSelect.value = favorite;
       render();
     }
     if (areaName === "local" && changes[CACHE_KEY]) {
@@ -70,26 +63,6 @@ export async function initNflWidget() {
   }
 
   render();
-
-  function populateFavoriteOptions(games) {
-    const teams = extractTeams(games);
-    const previousValue = favoriteSelect.value;
-    favoriteSelect.textContent = "";
-
-    const noneOption = document.createElement("option");
-    noneOption.value = "";
-    noneOption.textContent = "No favorite";
-    favoriteSelect.appendChild(noneOption);
-
-    for (const team of teams) {
-      const option = document.createElement("option");
-      option.value = team.abbreviation;
-      option.textContent = team.displayName;
-      favoriteSelect.appendChild(option);
-    }
-
-    favoriteSelect.value = favorite || previousValue || "";
-  }
 
   function renderGameRow(game) {
     const li = document.createElement("li");
@@ -132,8 +105,6 @@ export async function initNflWidget() {
 
     panelEl.hidden = false;
     titleEl.textContent = `Week ${cached.week} results`;
-
-    populateFavoriteOptions(cached.games);
 
     const games = [...cached.games].sort((a, b) => {
       const aFav = favorite && (a.home.abbreviation === favorite || a.away.abbreviation === favorite) ? 1 : 0;

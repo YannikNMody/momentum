@@ -1,13 +1,24 @@
-// Daily football background image, picked deterministically from the date so
-// every new tab opened on the same day shows the same photo. A "next image"
-// button lets the user cycle through the set; the choice is remembered for
-// the rest of the day in chrome.storage.local under the "background" key.
-// Images are bundled locally under images/ - nothing is fetched over the network.
+// Daily background image. Picked deterministically from the date so every
+// new tab opened on the same day shows the same photo, across a pool built
+// from the bundled football photos, the user's uploaded photos (stored in
+// IndexedDB via photoStore.js), or both - depending on the "Background
+// source" setting. A "next image" button cycles the pool and remembers the
+// day's choice; "Pin this photo" (set from the settings sheet) overrides
+// the daily pick with a single fixed photo until unpinned. Object URLs for
+// uploaded photos are revoked as soon as they're no longer shown.
 
 import { storage } from "./storage.js";
+import { getAllPhotos } from "./photoStore.js";
 
-const STORAGE_KEY = "background";
+export const BACKGROUND_KEY = "background";
+export const SOURCE_KEY = "backgroundSource";
+export const PIN_KEY = "backgroundPin";
+export const PHOTOS_CHANGED_EVENT = "momentum:photos-changed";
+
 const CREDITS_URL = "images/credits.json";
+
+export const bundledKey = (file) => `bundled:${file}`;
+export const customKey = (id) => `custom:${id}`;
 
 function todayKey(date = new Date()) {
   const y = date.getFullYear();
@@ -21,67 +32,131 @@ function dayOfYear(date) {
   return Math.floor((date - start) / 86400000);
 }
 
+async function loadCredits() {
+  try {
+    const res = await fetch(chrome.runtime.getURL(CREDITS_URL));
+    const credits = await res.json();
+    return Array.isArray(credits) ? credits : [];
+  } catch {
+    return [];
+  }
+}
+
+function buildPool(source, credits, customPhotos) {
+  const bundled = credits.map((c) => ({ type: "bundled", key: bundledKey(c.file), ...c }));
+  const custom = customPhotos.map((p) => ({ type: "custom", key: customKey(p.id), id: p.id, blob: p.blob }));
+
+  if (source === "custom") return custom.length ? custom : bundled;
+  if (source === "both") return [...bundled, ...custom];
+  return bundled;
+}
+
 export async function initBackground() {
   const imgEl = document.getElementById("background-image");
   const nextBtn = document.getElementById("background-next");
   const creditEl = document.getElementById("background-credit");
 
-  let credits;
-  try {
-    const res = await fetch(chrome.runtime.getURL(CREDITS_URL));
-    credits = await res.json();
-  } catch {
-    credits = null;
+  const credits = await loadCredits();
+
+  let pool = [];
+  let currentIndex = -1;
+  let activeObjectUrl = null;
+
+  async function resolvePool() {
+    const source = (await storage.sync.get(SOURCE_KEY))[SOURCE_KEY] || "bundled";
+    let customPhotos = [];
+    try {
+      customPhotos = await getAllPhotos();
+    } catch {
+      customPhotos = [];
+    }
+    return buildPool(source, credits, customPhotos);
   }
 
-  if (!Array.isArray(credits) || credits.length === 0) return;
-
-  const today = todayKey();
-  const defaultIndex = dayOfYear(new Date()) % credits.length;
-
-  const stored = (await storage.local.get(STORAGE_KEY))[STORAGE_KEY];
-  let index = stored && stored.date === today ? stored.index % credits.length : defaultIndex;
-
-  render(index);
-
-  nextBtn.addEventListener("click", async () => {
-    index = (index + 1) % credits.length;
-    await storage.local.set({ [STORAGE_KEY]: { date: today, index } });
-    render(index);
-  });
-
-  chrome.storage.onChanged.addListener((changes, areaName) => {
-    if (areaName !== "local" || !changes[STORAGE_KEY]) return;
-    const value = changes[STORAGE_KEY].newValue;
-    if (value && value.date === today && value.index !== index) {
-      index = value.index % credits.length;
-      render(index);
-    }
-  });
-
-  function render(i) {
-    const entry = credits[i];
-    if (!entry) return;
-
+  function loadSrc(src, revokeAfterLoad) {
     imgEl.classList.remove("loaded");
-
     const loader = new Image();
     loader.onload = () => {
       imgEl.src = loader.src;
       imgEl.classList.add("loaded");
+      if (revokeAfterLoad) URL.revokeObjectURL(revokeAfterLoad);
     };
     loader.onerror = () => {
       imgEl.removeAttribute("src");
       imgEl.classList.remove("loaded");
     };
-    loader.src = chrome.runtime.getURL(`images/${entry.file}`);
+    loader.src = src;
+  }
 
+  function setCredit(item) {
     creditEl.textContent = "";
+    if (item.type === "custom") {
+      creditEl.textContent = "Your photo";
+      return;
+    }
     const link = document.createElement("a");
-    link.href = entry.photoUrl;
+    link.href = item.photoUrl;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
-    link.textContent = `Photo by ${entry.photographer} on Unsplash`;
+    link.textContent = `Photo by ${item.photographer} on Unsplash`;
     creditEl.appendChild(link);
   }
+
+  function renderItem(item) {
+    const previousObjectUrl = activeObjectUrl;
+    if (item.type === "custom") {
+      activeObjectUrl = URL.createObjectURL(item.blob);
+      loadSrc(activeObjectUrl, previousObjectUrl);
+    } else {
+      activeObjectUrl = null;
+      loadSrc(chrome.runtime.getURL(`images/${item.file}`), previousObjectUrl);
+    }
+    setCredit(item);
+  }
+
+  async function pickAndRender() {
+    pool = await resolvePool();
+    nextBtn.disabled = pool.length === 0;
+    if (pool.length === 0) return;
+
+    const pin = (await storage.local.get(PIN_KEY))[PIN_KEY] || null;
+    let index = -1;
+
+    if (pin) {
+      index = pool.findIndex((p) => p.key === pin.key);
+    }
+
+    if (index === -1) {
+      const today = todayKey();
+      const stored = (await storage.local.get(BACKGROUND_KEY))[BACKGROUND_KEY];
+      if (stored && stored.date === today) {
+        index = pool.findIndex((p) => p.key === stored.key);
+      }
+      if (index === -1) index = dayOfYear(new Date()) % pool.length;
+    }
+
+    currentIndex = index;
+    nextBtn.classList.toggle("background-next-pinned", Boolean(pin));
+    renderItem(pool[index]);
+  }
+
+  nextBtn.addEventListener("click", async () => {
+    if (!pool.length) return;
+    const pin = (await storage.local.get(PIN_KEY))[PIN_KEY] || null;
+    if (pin) return;
+
+    currentIndex = (currentIndex + 1) % pool.length;
+    const item = pool[currentIndex];
+    await storage.local.set({ [BACKGROUND_KEY]: { date: todayKey(), key: item.key } });
+    renderItem(item);
+  });
+
+  window.addEventListener(PHOTOS_CHANGED_EVENT, pickAndRender);
+
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName === "local" && (changes[BACKGROUND_KEY] || changes[PIN_KEY])) pickAndRender();
+    if (areaName === "sync" && changes[SOURCE_KEY]) pickAndRender();
+  });
+
+  await pickAndRender();
 }

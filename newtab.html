@@ -31,9 +31,72 @@
 
   <div class="corner-controls">
     <button id="distraction-toggle" class="distraction-toggle" type="button" title="Toggle distraction-free view (F)" aria-pressed="false">Focus view</button>
+    <button id="settings-toggle" class="settings-toggle" type="button" aria-haspopup="dialog" aria-controls="settings-sheet" aria-expanded="false" title="Settings">
+      <span class="visually-hidden">Settings</span>
+    </button>
     <button id="background-next" class="background-next distraction-hide" type="button" title="Next background image">Next photo</button>
   </div>
   <p id="background-credit" class="background-credit distraction-hide"></p>
+
+  <div id="settings-overlay" class="settings-overlay" hidden></div>
+  <div id="settings-sheet" class="settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
+    <div class="settings-header">
+      <h2 id="settings-title">Settings</h2>
+      <button id="settings-close" class="settings-close" type="button" aria-label="Close settings">Close</button>
+    </div>
+
+    <section class="settings-section">
+      <h3>General</h3>
+      <label class="settings-label" for="settings-name-input">Your name</label>
+      <input id="settings-name-input" class="settings-input" type="text" autocomplete="off" />
+    </section>
+
+    <section class="settings-section">
+      <h3>Background</h3>
+      <label class="settings-label" for="settings-background-source">Background source</label>
+      <select id="settings-background-source" class="settings-select">
+        <option value="bundled">Football photos</option>
+        <option value="custom">My photos</option>
+        <option value="both">Both</option>
+      </select>
+
+      <div id="settings-dropzone" class="settings-dropzone">
+        <p>Drag photos here, or</p>
+        <label class="settings-file-label" for="settings-file-input">Choose files</label>
+        <input id="settings-file-input" class="settings-file-input" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden />
+      </div>
+      <p id="settings-upload-message" class="settings-upload-message" role="status"></p>
+      <p id="settings-storage-usage" class="settings-storage-usage"></p>
+
+      <ul id="settings-gallery" class="settings-gallery"></ul>
+    </section>
+
+    <section class="settings-section">
+      <h3>Weather</h3>
+      <label class="settings-label" for="settings-weather-city-input">City</label>
+      <input id="settings-weather-city-input" class="settings-input" type="text" placeholder="Search city" autocomplete="off" />
+      <ul id="settings-weather-results" class="settings-weather-results"></ul>
+      <p id="settings-weather-current" class="settings-weather-current"></p>
+      <div class="settings-unit-toggle" role="radiogroup" aria-label="Temperature units">
+        <button id="settings-unit-c" class="settings-unit-btn" type="button" role="radio">°C</button>
+        <button id="settings-unit-f" class="settings-unit-btn" type="button" role="radio">°F</button>
+      </div>
+    </section>
+
+    <section class="settings-section">
+      <h3>NFL</h3>
+      <label class="settings-label" for="settings-nfl-favorite">Favorite team</label>
+      <select id="settings-nfl-favorite" class="settings-select"></select>
+    </section>
+
+    <section class="settings-section">
+      <h3>Focus</h3>
+      <label class="settings-label" for="settings-focus-minutes">Focus length (minutes)</label>
+      <input id="settings-focus-minutes" class="settings-input settings-input-number" type="number" min="1" max="180" />
+      <label class="settings-label" for="settings-break-minutes">Break length (minutes)</label>
+      <input id="settings-break-minutes" class="settings-input settings-input-number" type="number" min="1" max="60" />
+    </section>
+  </div>
 
   <main class="container">
     <p id="greeting" class="greeting"></p>
@@ -88,8 +151,6 @@
       <span id="nfl-title">NFL</span>
     </button>
     <div id="nfl-body" class="nfl-body">
-      <label class="nfl-favorite-label" for="nfl-favorite-select">Favorite team</label>
-      <select id="nfl-favorite-select" class="nfl-favorite-select"></select>
       <ul id="nfl-game-list" class="nfl-game-list"></ul>
       <p id="nfl-updated" class="nfl-updated"></p>
     </div>

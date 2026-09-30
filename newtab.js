@@ -4,6 +4,7 @@ import { initDistractionFree } from "./js/distraction-free.js";
 import { initFocus } from "./js/focus.js";
 import { initGreeting } from "./js/greeting.js";
 import { initNflWidget } from "./js/nfl-widget.js";
+import { initSettings } from "./js/settings.js";
 import { initTimer } from "./js/timer.js";
 import { initTodos } from "./js/todos.js";
 import { initWeatherWidget } from "./js/weather-widget.js";
@@ -18,4 +19,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   initDistractionFree();
   initNflWidget();
   initWeatherWidget();
+  initSettings();
 });

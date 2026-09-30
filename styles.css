@@ -613,3 +613,289 @@ body {
   font-size: 0.7rem;
   opacity: 0.5;
 }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.settings-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: inherit;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.settings-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.settings-toggle svg {
+  display: block;
+}
+
+.background-next[disabled] {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.background-next-pinned {
+  display: none;
+}
+
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.settings-sheet {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 11;
+  width: 22rem;
+  max-width: 92vw;
+  overflow-y: auto;
+  background: rgba(20, 22, 26, 0.97);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1.25rem;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.settings-header h2 {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.settings-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+}
+
+.settings-close:hover {
+  opacity: 1;
+}
+
+.settings-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-section:last-child {
+  border-bottom: none;
+}
+
+.settings-section h3 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+  opacity: 0.85;
+}
+
+.settings-label {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-bottom: 0.25rem;
+  margin-top: 0.6rem;
+}
+
+.settings-label:first-of-type {
+  margin-top: 0;
+}
+
+.settings-input,
+.settings-select {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+}
+
+.settings-input:focus,
+.settings-select:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.settings-input-number {
+  width: 5rem;
+}
+
+.settings-dropzone {
+  margin-top: 0.75rem;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 0.9rem;
+  text-align: center;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.settings-dropzone-active {
+  border-color: rgba(255, 255, 255, 0.6);
+  opacity: 1;
+}
+
+.settings-file-label {
+  display: inline-block;
+  margin-top: 0.4rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.settings-upload-message {
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  opacity: 0.75;
+  min-height: 1em;
+}
+
+.settings-storage-usage {
+  font-size: 0.75rem;
+  opacity: 0.55;
+  margin-top: 0.3rem;
+}
+
+.settings-gallery {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.settings-gallery-empty {
+  grid-column: 1 / -1;
+  font-size: 0.8rem;
+  opacity: 0.5;
+}
+
+.settings-gallery-item {
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-gallery-item-pinned {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.settings-gallery-thumb {
+  width: 100%;
+  height: 5rem;
+  object-fit: cover;
+  display: block;
+}
+
+.settings-gallery-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.4rem;
+}
+
+.settings-gallery-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: inherit;
+  font: inherit;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  padding: 0.25rem 0.4rem;
+  cursor: pointer;
+}
+
+.settings-gallery-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.settings-gallery-btn-danger {
+  color: #ff8a80;
+}
+
+.settings-weather-results {
+  list-style: none;
+  margin-top: 0.3rem;
+  max-height: 8rem;
+  overflow-y: auto;
+}
+
+.settings-weather-result {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 0.3rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.settings-weather-result:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.settings-weather-current {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.settings-unit-toggle {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.settings-unit-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: inherit;
+  font: inherit;
+  border-radius: 6px;
+  padding: 0.35rem;
+  cursor: pointer;
+}
+
+.settings-unit-btn-active {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.5);
+}

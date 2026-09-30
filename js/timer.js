@@ -9,7 +9,19 @@
 import { storage } from "./storage.js";
 
 const STORAGE_KEY = "timer";
-const DURATIONS = { focus: 25 * 60 * 1000, break: 5 * 60 * 1000 };
+export const DURATIONS_KEY = "timerDurations";
+const DEFAULT_DURATIONS_MIN = { focus: 25, break: 5 };
+
+let DURATIONS = { focus: DEFAULT_DURATIONS_MIN.focus * 60 * 1000, break: DEFAULT_DURATIONS_MIN.break * 60 * 1000 };
+
+function applyDurationSettings(settings) {
+  const focusMin = Number(settings?.focusMin);
+  const breakMin = Number(settings?.breakMin);
+  DURATIONS = {
+    focus: (Number.isFinite(focusMin) && focusMin > 0 ? focusMin : DEFAULT_DURATIONS_MIN.focus) * 60 * 1000,
+    break: (Number.isFinite(breakMin) && breakMin > 0 ? breakMin : DEFAULT_DURATIONS_MIN.break) * 60 * 1000,
+  };
+}
 
 function idleState(mode) {
   return { mode, status: "idle", endsAt: null, remainingMs: DURATIONS[mode] };
@@ -35,6 +47,8 @@ export async function initTimer() {
   const bannerEl = document.getElementById("timer-banner");
   const bannerTextEl = document.getElementById("timer-banner-text");
   const dismissBtn = document.getElementById("timer-dismiss");
+
+  applyDurationSettings((await storage.sync.get(DURATIONS_KEY))[DURATIONS_KEY]);
 
   let state = (await storage.local.get(STORAGE_KEY))[STORAGE_KEY] || idleState("focus");
   let tickId = null;
@@ -75,9 +89,17 @@ export async function initTimer() {
   });
 
   chrome.storage.onChanged.addListener((changes, areaName) => {
-    if (areaName !== "local" || !changes[STORAGE_KEY]) return;
-    state = changes[STORAGE_KEY].newValue || idleState("focus");
-    render();
+    if (areaName === "local" && changes[STORAGE_KEY]) {
+      state = changes[STORAGE_KEY].newValue || idleState("focus");
+      render();
+    }
+    if (areaName === "sync" && changes[DURATIONS_KEY]) {
+      applyDurationSettings(changes[DURATIONS_KEY].newValue);
+      if (state.status === "idle") {
+        state = idleState(state.mode);
+        render();
+      }
+    }
   });
 
   document.addEventListener("visibilitychange", () => {
