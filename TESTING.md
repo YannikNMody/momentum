@@ -124,3 +124,54 @@ Load the extension first: `chrome://extensions` → enable **Developer mode** �
 ### First-run name prompt
 **Steps:** Remove any saved name first (open the extension's service worker/console via `chrome://extensions` → "Inspect views", run `chrome.storage.sync.remove('name')`, then open a new tab). Alternatively, load the extension fresh in a new Chrome profile.
 **Expected:** Instead of a greeting, you see an inline "What's your name?" prompt. Typing a name and pressing Enter replaces it with "Good [morning/afternoon/evening/night], <name>." Reopening a new tab afterward shows the greeting directly (no prompt), and clicking the name lets you edit it again (Enter saves, Escape cancels).
+
+## 10. Weather widget
+
+**Steps:** Open a new tab. If no city is set, click the weather widget (top-right) and search for a city (e.g. "Lisbon"), then pick a result.
+**Expected:** The widget shows the current temperature and a condition icon for the chosen city. Reload the page — the same city and reading are shown (no re-prompt), refetched only if the cached reading is more than ~30 minutes old.
+
+### °C/°F toggle
+**Steps:** Open Settings (gear icon) → Weather → click °F, then °C.
+**Expected:** The displayed temperature in the widget updates immediately to match the selected unit, and stays that way after reloading the page.
+
+### Weather fetch fails
+**Steps:** With a city already set, go offline (DevTools → Network → "Offline") and reload the new tab.
+**Expected:** The last cached reading is still shown (no broken UI, no console errors) rather than the widget disappearing or showing an error state.
+
+## 11. Settings sheet
+
+**Steps:** Click the gear icon (top-right). Then click outside the sheet, and separately press Escape.
+**Expected:** A single sheet opens covering General, Background, Weather, NFL and Focus sections. Both clicking outside and pressing Escape close it. Tabbing from the last focusable control wraps back to the first (and Shift+Tab from the first wraps to the last) — focus never escapes the sheet while it's open.
+**Expected (name):** Changing the name field and clicking/tabbing away updates the greeting immediately.
+**Expected (focus timer lengths):** Changing "Focus minutes" or "Break minutes" and leaving the field updates the values the timer uses next time it's (re)started.
+
+## 12. Custom background photos
+
+### Uploading via file picker and via drag-and-drop
+**Steps:** Open Settings → Background. Click the dropzone to open a file picker and select a JPG/PNG/WebP photo. Then drag another image file from Finder directly onto the dropzone.
+**Expected:** Both methods add the photo to the "My photos" gallery below, with a thumbnail. The storage usage line (e.g. "1.2 MB used · 2/30 photos") updates after each upload.
+
+### Downscale / re-encode
+**Steps:** Upload a very large photo (e.g. a multi-megapixel JPG).
+**Expected:** It still uploads successfully and the storage usage shown is far smaller than the original file size (client-side downscale to a 2560px long edge + WebP/JPEG re-encode).
+
+### Reject unsupported types (including HEIC)
+**Steps:** Try uploading a `.heic` file (iPhone photo), then try uploading a non-image file (e.g. a `.txt` or `.pdf`).
+**Expected:** The HEIC file is rejected with a message telling you to convert to JPG first; the non-image file is rejected with an "unsupported image type" message. Neither appears in the gallery.
+
+### 30-photo limit
+**Steps:** Upload photos until the gallery reaches 30 (or check `chrome.storage`/IndexedDB usage line as a shortcut), then try uploading one more.
+**Expected:** The extra upload is rejected with a "Limit of 30 photos reached" message; the gallery still shows exactly 30.
+
+### Set as background / Pin / Delete
+**Steps:** In the gallery, click "Set as background" on a photo — expect the new tab's background to switch to it immediately (source auto-widens to "Both" if it was "Football photos" only). Click "Pin this photo" on another photo — expect it to become the fixed background regardless of the day, marked as pinned in the gallery; click "Unpin" to release it back to the daily rotation. Click "Delete" on a photo (confirm the dialog) — expect it removed from the gallery and IndexedDB immediately; if it was pinned, the pin clears too.
+**Expected:** All three actions take effect immediately without a page reload, and persist after reloading the new tab.
+
+### Background source switching
+**Steps:** Open Settings → Background → "Background source" dropdown. Try "Football photos" (bundled only), "My photos" (custom only, requires at least one upload), and "Both".
+**Expected:** The background pool used for the daily pick and "Next photo" button matches the selected source. Switching to "My photos" with zero uploads falls back to the bundled photos rather than showing nothing.
+
+## 13. Readability over background photos
+
+**Steps:** Cycle through the bundled photos with "Next photo" (top-right), pausing on the brightest and darkest ones. Also try a custom upload of a near-white and a near-black image via Settings → Background.
+**Expected:** In every case, the clock/greeting/focus text and every glass panel's text stay clearly legible — no washed-out white-on-white or low-contrast passages. On brighter photos a soft dark glass plate appears behind the center text stack (in addition to the radial scrim) to keep it readable; on darker photos the scrim alone is enough. Toggling `prefers-reduced-transparency` (DevTools → Rendering tab → "Emulate CSS media feature prefers-reduced-transparency") replaces every glass surface with a solid dark panel instead of a blurred/translucent one. Run `python3 tests/contrast_check.py` for the underlying pass/fail numbers across synthetic worst-case fixtures (all-white, all-black, mid-grey, noise, half/half split) — it should print "ALL PASS".
