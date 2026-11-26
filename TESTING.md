@@ -57,6 +57,10 @@ Load the extension first: `chrome://extensions` → enable **Developer mode** �
 **Steps:** In the timer section, click "Start". Watch it count down from 25:00. Click "Pause", wait a few seconds, click "Resume". Click "Reset".
 **Expected:** The countdown updates every second. Pause freezes the display; Resume continues from where it paused (not from 25:00). Reset returns it to 25:00, idle. The browser tab's title shows the live countdown (e.g. "24:58 · Focus") while running.
 
+### Only the right buttons and messages show
+**Steps:** Look at the timer when it is idle, while running, and while paused. Also look at the main focus area before and after setting a focus.
+**Expected:** Idle shows Start (and "Skip to break" in focus mode); running shows Pause; paused shows Resume. Never two of Start / Pause / Resume at once. The "time's up" banner is not visible until a session ends. Before a focus is set, only the input shows; after, only the focus text with its tick, edit and clear buttons.
+
 ### Timer survives refresh and multiple tabs
 **Steps:** Start the timer, then reload the page (Cmd+R). Open a second new tab.
 **Expected:** After reloading, the countdown continues from roughly the correct remaining time (not reset to 25:00). The second tab shows the same countdown, in sync, and clicking Pause in one tab pauses it in the other after it updates.
