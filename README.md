@@ -86,10 +86,13 @@ After changing any file, click the reload arrow on the extension's card in `chro
 
 ## Learning
 
-<!-- TODO (Yannik): write this section yourself, in your own words. -->
-<!-- Big picture and challenge: state that survives. A timer that only counts down in memory resets on refresh, so it stores the end time and recalculates on every load; two open tabs overwrote each other's todos, so they now listen for each other's changes (storage.onChanged). -->
+**Making state survive refreshes and multiple tabs**
 
-_To be written._
+- A new tab page is opened and closed all the time, often several at once, so anything kept only in memory gets lost. We identified two places where this would break before building them.
+- **Timer:** a countdown kept in memory resets on every refresh. The timer stores its *end time* instead of the time left and recalculates from the clock on every load, so it survives refreshes, closed tabs and several open tabs.
+- **Todos:** with two tabs open, each would save its own copy of the list and the second would overwrite the first, which looks like "my todos disappeared". Every tab now listens for storage changes (`chrome.storage.onChanged`) and updates itself. "Two tabs open at once" became one of my tests.
+- **Where to store it:** todos go in `chrome.storage.local`, not `sync`, because `sync` limits each stored item to 8 KB and a long list would silently stop saving.
+- **Testing:** Claude Code's first check only *read* the code, so I ran the tests in Chrome myself. While preparing this submission, a screenshot showed a bug that reading the code had not caught (all timer buttons visible at once).
 
 ## Limitations and assistance
 
@@ -105,7 +108,7 @@ _To be written._
 
 **AI assistance**
 
-All code in this project was written by AI. I used Claude chat (Opus 5.5) to brainstorm, plan the features and design, and write implementation prompts and guidelines. Claude Code (Sonnet 5) implemented, ran, tested and committed the changes in my repository. My part was deciding what to build, making the calls when trade-offs came up, testing the results by hand, and reviewing what went into the repo. Commits made by Claude during submission prep are authored as "Claude".
+All code in this project was written by AI. I used Claude chat (Opus 5.5) to brainstorm, plan the features and design, and write implementation prompts and guidelines. Claude Code (Sonnet 5) implemented, ran, tested and committed the changes in my repository. My part was deciding what to build, making the calls when trade-offs came up, testing the results by hand, and reviewing what went into the repo. Commits made by Claude during submission prep are authored as "Claude". The README text, including the Learning section, was drafted by Claude from my project chats and notes; I reviewed and approved it.
 
 **Other sources**
 
