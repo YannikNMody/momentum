@@ -5,6 +5,14 @@
    radial dark scrim (see .scrim) but must never go MORE transparent than
    these values, since that's what keeps text readable over any photo. */
 
+/* The HTML `hidden` attribute must always win. Components below set their own
+   `display` (e.g. .timer-btn uses inline-flex), which would otherwise override
+   it and show elements the scripts have hidden (timer buttons, the "time's up"
+   banner, the main-focus form/display). */
+[hidden] {
+  display: none !important;
+}
+
 @property --scrim-opacity {
   syntax: "<number>";
   inherits: true;
